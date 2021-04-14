@@ -52,7 +52,7 @@ data Neu where
 -- normal form
 data Nrm where
   `λ_ : ∀ {Γ α β} → Nrm (Γ , α) β → Nrm Γ (α `→ β)
-  neu : ∀ {Γ α}   → Neu Γ       α → Nrm Γ α
+  `neu : ∀ {Γ α}  → Neu Γ       α → Nrm Γ α
   `●  : ∀ {Γ}     → Nrm Γ `●
 
 --
@@ -102,7 +102,7 @@ apply : ∀ {Γ α} → Neu Γ α → Sem Γ α
 reify : ∀ {Γ α} → Sem′ Γ α → Nrm Γ α
 
 apply {_} {α `→ β} a = λ g → apply (a `∙ reify g)
-apply {_} {`●}     a = neu a
+apply {_} {`●}     a = `neu a
 
 reify {_} {α `→ β} g = `λ reify (λ ρ_ → g (forget1 ρ_) (λ ρ′_ → apply (` ρ′ ρ z)))
 reify {_} {`●}     g = g ρ-id
@@ -144,5 +144,5 @@ _ = refl
 _ : norm {∅} {`● `→ `●} (`λ (`λ ` z) `∙ `●) ≡ `λ `●
 _ = refl
 
-_ : norm {∅} {`● `→ `●} (`λ ((`λ ` z) `∙ ` z)) ≡ `λ (neu (` z))
+_ : norm {∅} {`● `→ `●} (`λ ((`λ ` z) `∙ ` z)) ≡ `λ (`neu (` z))
 _ = refl
