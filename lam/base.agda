@@ -4,10 +4,6 @@ lam: the simply-typed lambda calculus
 inspired by https://github.com/jeprinz/unquote-n/blob/main/STLC/NbE.agda
 -}
 
-open import Data.Unit
-open import Data.Product renaming (_,_ to _&_)
-open import Data.Bool
-open import Data.Maybe
 open import Relation.Binary.PropositionalEquality
 
 infixr 10 _`→_
@@ -63,6 +59,7 @@ data Nrm where
 -- renaming
 --
 
+-- renaming
 _⇉_ : Ctx → Ctx → Set 
 Γ₁ ⇉ Γ₂ = ∀ {α} → Var Γ₁ α → Var Γ₂ α
 
@@ -97,6 +94,7 @@ Sem′ Γ α = ∀ {Γ′} → Γ ⇉ Γ′ → Sem Γ′ α
 -- substitution
 --
 
+-- substitution
 _↦_ : Ctx → Ctx → Set
 Γ₁ ↦ Γ₂ = ∀ {α} → Var Γ₁ α → Sem′ Γ₂ α
 
@@ -116,8 +114,6 @@ lift σ (s x) ρ = σ x (forget1 ρ)
 σ-id : ∀ {Γ} → Γ ↦ Γ
 σ-id x ρ = apply (` ρ x)
 
--- utilities
-
 _∘′_ : ∀ {Γ₁ Γ₂ Γ₃} → Γ₁ ↦ Γ₂ → Γ₂ ⇉ Γ₃ → Γ₁ ↦ Γ₃
 σ ∘′ ρ = λ x ρ′ → σ x (ρ ∘ ρ′)
 
@@ -131,6 +127,7 @@ eval (`λ a)   σ = λ g → eval a (append1 σ g)
 eval (f `∙ a) σ = eval f σ λ ρ → eval a (σ ∘′ ρ)
 eval `●       σ = `●
 
+-- "norm = reify ∘ eval"
 norm : ∀ {Γ α} → Exp Γ α → Nrm Γ α
 norm a = reify (λ ρ → eval a (σ-id ∘′ ρ))
 
