@@ -130,7 +130,6 @@ Sem′ Γ α = ∀ {Γ′} → Γ ⇉ Γ′ → Sem Γ′ α
 _↦_ : Ctx → Ctx → Set
 Γ₁ ↦ Γ₂ = ∀ {α} → Var Γ₁ α → Sem′ Γ₂ α
 
--- apply and reify interpreted neutral forms
 -- (defined in next section)
 apply : ∀ {Γ α} → Neu Γ α → Sem Γ α
 reify : ∀ {Γ α} → Sem′ Γ α → Nrm Γ α
